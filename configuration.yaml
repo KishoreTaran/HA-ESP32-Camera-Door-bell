@@ -1,0 +1,79 @@
+esphome:
+  name: esp32-camera
+
+esp32:
+  board: esp-wrover-kit
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "2pdRFNRZvnclwIMV5SAB/aNK6oj5SdeGMiBO90l5VZw="
+
+ota:
+  password: "88c2114a1b617aa0f6c134c9ff4b9927"
+
+wifi:
+  ssid: Test3
+  password: 789321456@#
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp32-Camera Fallback Hotspot"
+    password: "9A1uc6FW6YT2"
+
+captive_portal:
+light:
+  - platform: binary
+    output: gpio_4
+    name: Door Bell Camera Flashlight
+  - platform: binary
+    output: gpio_2
+    name: Door Bell Buzzer
+  
+output:
+  - platform: gpio
+    pin: GPIO4
+    id: gpio_4  
+  - platform: gpio
+    pin: GPIO2
+    id: gpio_2
+  
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO15
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Door Bell Button"
+  - platform: status
+    name: "Video Door Bell Connected"
+  
+switch:
+  - platform: gpio
+    pin: GPIO14
+    inverted: True
+    name: "Door Lock"
+
+esp32_camera:
+  external_clock:
+    pin: GPIO0
+    frequency: 20MHz
+  i2c_pins:
+    sda: GPIO26
+    scl: GPIO27
+  data_pins: [GPIO5, GPIO18, GPIO19, GPIO21, GPIO36, GPIO39, GPIO34, GPIO35]
+  vsync_pin: GPIO25
+  href_pin: GPIO23
+  pixel_clock_pin: GPIO22
+  power_down_pin: GPIO32
+  resolution: 1024x768
+  idle_framerate: 0.05 fps
+  max_framerate: 5 fps
+  vertical_flip: false
+  horizontal_mirror: false 
+  name: esp32camera
